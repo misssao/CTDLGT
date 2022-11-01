@@ -1,0 +1,84 @@
+---------------------------------------------------
+
+typedef int ItemType;
+struct StackNode
+{
+	ItemType Info;
+	StackNode* Next;
+};
+struct Stack
+{
+	StackNode* Top;
+};
+
+---------------------------------------------------
+
+StackNode* CreateStackNode(ItemType x)
+{
+	StackNode* p = new StackNode;
+	if(p == NULL)
+	{
+		printf(“Không đủ bộ nhớ để cấp phát!”);
+		getch();
+		return NULL;
+	}
+	p->Info = x;
+	p->Next = NULL;
+	return p;
+}	
+
+---------------------------------------------------
+
+void InitStack(Stack &s)
+{
+	s.Top = NULL;
+}
+
+---------------------------------------------------
+
+int IsEmpty(Stack s) //Stack có rỗng hay không
+{
+	if(s.Top == NULL)
+		return 1; //Nếu Stack rỗng
+	else
+		return 0; //Nếu Stack không rỗng
+}
+
+---------------------------------------------------
+
+int Push(Stack &s, StackNode* p)
+{
+	if(p == NULL)
+		return 0; //Không thực hiện được
+	if(IsEmpty(s) == 1)
+		s.Top = p;
+	else
+	{
+		p->Next = s.Top;
+		s.Top = p;
+	}
+	return 1; //Thực hiện thành công
+}
+
+---------------------------------------------------
+
+int Pop(Stack &s, ItemType &x)
+{
+	if(IsEmpty(s) == 1) //Stack rỗng
+		return 0; //Không thực hiện được
+	StackNode* p = s.Top;
+	s.Top = s.Top->Next;
+	x = p->Info; //Lấy thông tin của nút ở đỉnh Stack
+	delete p; //Hủy nút do p trỏ đến
+	return 1; //Thực hiện thành công
+}
+
+---------------------------------------------------
+
+int Top(Stack s, ItemType &x)
+{
+	if(IsEmpty(s) == 1) //Stack rỗng
+		return 0; //Không thực hiện được
+	x = s.Top->Info; //Lấy thông tin của nút ở đỉnh Stack
+	return 1; //Thực hiện thành công
+}

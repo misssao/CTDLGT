@@ -1,0 +1,104 @@
+typedef int ItemType;
+struct QueueNode
+{
+	ItemType Info;
+	QueueNode* Next;
+};
+struct Queue
+{
+	QueueNode* Head;
+	QueueNode* Tail;
+};
+
+
+QueueNode* CreateQueueNode(ItemType x)
+{
+	QueueNode* p = new QueueNode;
+	if(p == NULL)
+	{
+		printf(“Không đủ bộ nhớ để cấp phát!”);
+		getch();
+		return NULL;
+	}
+	p->Info = x;
+	p->Next = NULL;
+	return p;
+}
+
+
+void InitQueue(Queue &q)
+{
+	q.Head = NULL;
+	q.Tail = NULL;
+}
+
+
+int IsEmpty(Queue q)
+{
+	if(q.Head == NULL)
+		return 1;
+	else
+		return 0;
+}
+Hoặc có thể viết gọn hơn như sau:
+int IsEmpty(Queue q)
+{
+	return (q.Head == NULL);
+}
+
+
+int Insert(Queue &q, QueueNode* p)
+{
+	if(p == NULL)
+		return 0;
+	if(IsEmpty(q) == 1)
+		q.Head = p;
+	else
+		q.Tail->Next = p;
+	q.Tail = p;
+	return 1; //Thực hiện thành công
+}
+
+
+int Remove(Queue &q, ItemType &x)
+{
+	if(IsEmpty(q) == 1)
+		return 0; 
+	QueueNode* p = q.Head;
+	q.Head = q.Head->Next;
+	if(q.Head == NULL)
+		q.Tail = NULL;
+	x = p->Info; 
+	delete p; 
+	return 1;
+}
+
+
+int Head(Queue q, ItemType &x)
+{
+	if(IsEmpty(q) == 1)
+		return 0; //Không thực hiện được
+	x = q.Head->Info; //Lấy thông tin của nút bị hủy
+	return 1; //Thực hiện thành công
+}
+
+
+int Tail(Queue q, ItemType &x)
+{
+	if(IsEmpty(q) == 1)
+		return 0; //Không thực hiện được
+	x = q.Tail->Info; //Lấy thông tin của nút bị hủy
+	return 1; //Thực hiện thành công
+}
+
+void ShowQueue(Queue q)
+{
+	if(IsEmpty(q) == 1)
+	{
+		printf(“\nHàng đợi rỗng!”);
+		return; //Không thực hiện được
+	}
+	printf(“\nNội dung hàng đợi là: ”);
+	for(QueueNode* p = q.Head; p != NULL; p = p->Next)
+		printf(“%4d”, p->Info);
+}
